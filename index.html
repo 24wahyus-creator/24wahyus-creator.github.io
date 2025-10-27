@@ -1,4 +1,22 @@
-<html>
-<script>alert('hi')</script>
-  <center><h1> drag this https://24wahyus-creator.github.io/test.apk </center></h1>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Test6 — iframe src=tel:</title>
+</head>
+<body>
+<h1>Test 6 — iframe navigation to tel:</h1>
+<p>Append an iframe with <code>src="tel:"</code>. Usually iframe navigation to non-http schemes is ignored/blocked.</p>
+<button id="run6">Run Test 6</button>
+<script>
+document.getElementById('run6').addEventListener('click', function(){
+const iframe = document.createElement('iframe');
+iframe.style.width='1px'; iframe.style.height='1px'; iframe.style.border='0';
+iframe.src = 'tel:+6285729564207';
+document.body.appendChild(iframe);
+alert('Iframe with src=tel: appended. Observe behavior.');
+});
+</script>
+</body>
 </html>
