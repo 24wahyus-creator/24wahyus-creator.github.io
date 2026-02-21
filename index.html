@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <script>alert("M Wahyu Setya Agung");</script>
+        <script>alert("M Wahyu Setya Agung");</script>
 <head>
     <title>Analisis Inflasi Indonesia 2015-2024</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,6 +13,7 @@
     <tr>
         <th>Tahun</th>
         <th>Inflasi (%)</th>
+        <th>Kategori</th>
     </tr>
     <tbody id="dataTable"></tbody>
 </table>
@@ -25,18 +26,40 @@
 <p id="range"></p>
 <p id="std"></p>
 
+<h2>Jumlah Kategori Inflasi</h2>
+<p id="kategoriCount"></p>
+
 <canvas id="chart" width="600" height="300"></canvas>
 
 <script>
     const tahun = [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
     const inflasi = [3.35,3.02,3.61,3.13,2.72,1.68,1.87,5.51,2.61,2.75];
 
-    // Tampilkan tabel
     const table = document.getElementById("dataTable");
+
+    let rendah = 0;
+    let sedang = 0;
+    let tinggi = 0;
+
+    function kategoriInflasi(nilai){
+        if(nilai < 2){
+            rendah++;
+            return "Rendah";
+        } else if(nilai <= 4){
+            sedang++;
+            return "Sedang";
+        } else {
+            tinggi++;
+            return "Tinggi";
+        }
+    }
+
     for(let i=0;i<tahun.length;i++){
+        const kategori = kategoriInflasi(inflasi[i]);
         table.innerHTML += `<tr>
             <td>${tahun[i]}</td>
             <td>${inflasi[i]}</td>
+            <td>${kategori}</td>
         </tr>`;
     }
 
@@ -58,7 +81,6 @@
     const variance = inflasi.reduce((a,b)=>a + Math.pow(b-mean,2),0)/inflasi.length;
     const std = Math.sqrt(variance);
 
-    // Output hasil
     document.getElementById("mean").innerHTML = "Mean: " + mean.toFixed(2) + "%";
     document.getElementById("median").innerHTML = "Median: " + median.toFixed(2) + "%";
     document.getElementById("min").innerHTML = "Minimum: " + min + "%";
@@ -66,7 +88,11 @@
     document.getElementById("range").innerHTML = "Range: " + range.toFixed(2) + "%";
     document.getElementById("std").innerHTML = "Standar Deviasi: " + std.toFixed(2) + "%";
 
-    // Grafik
+    document.getElementById("kategoriCount").innerHTML =
+        "Rendah: " + rendah + " tahun | " +
+        "Sedang: " + sedang + " tahun | " +
+        "Tinggi: " + tinggi + " tahun";
+
     new Chart(document.getElementById("chart"), {
         type: 'line',
         data: {
