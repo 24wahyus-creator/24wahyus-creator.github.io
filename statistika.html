@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analisis Inflasi Indonesia 2015-2024</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h2>Data Inflasi Indonesia (2015-2024)</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Tahun</th>
+        <th>Inflasi (%)</th>
+    </tr>
+    <tbody id="dataTable"></tbody>
+</table>
+
+<h2>Hasil Analisis Statistik</h2>
+<p id="mean"></p>
+<p id="median"></p>
+<p id="min"></p>
+<p id="max"></p>
+<p id="range"></p>
+<p id="std"></p>
+
+<canvas id="chart" width="600" height="300"></canvas>
+
+<script>
+    const tahun = [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
+    const inflasi = [3.35,3.02,3.61,3.13,2.72,1.68,1.87,5.51,2.61,2.75];
+
+    // Tampilkan tabel
+    const table = document.getElementById("dataTable");
+    for(let i=0;i<tahun.length;i++){
+        table.innerHTML += `<tr>
+            <td>${tahun[i]}</td>
+            <td>${inflasi[i]}</td>
+        </tr>`;
+    }
+
+    // Mean
+    const mean = inflasi.reduce((a,b)=>a+b,0)/inflasi.length;
+
+    // Median
+    const sorted = [...inflasi].sort((a,b)=>a-b);
+    const median = (sorted[4]+sorted[5])/2;
+
+    // Min & Max
+    const min = Math.min(...inflasi);
+    const max = Math.max(...inflasi);
+
+    // Range
+    const range = max - min;
+
+    // Standar Deviasi
+    const variance = inflasi.reduce((a,b)=>a + Math.pow(b-mean,2),0)/inflasi.length;
+    const std = Math.sqrt(variance);
+
+    // Output hasil
+    document.getElementById("mean").innerHTML = "Mean: " + mean.toFixed(2) + "%";
+    document.getElementById("median").innerHTML = "Median: " + median.toFixed(2) + "%";
+    document.getElementById("min").innerHTML = "Minimum: " + min + "%";
+    document.getElementById("max").innerHTML = "Maximum: " + max + "%";
+    document.getElementById("range").innerHTML = "Range: " + range.toFixed(2) + "%";
+    document.getElementById("std").innerHTML = "Standar Deviasi: " + std.toFixed(2) + "%";
+
+    // Grafik
+    new Chart(document.getElementById("chart"), {
+        type: 'line',
+        data: {
+            labels: tahun,
+            datasets: [{
+                label: 'Inflasi (%)',
+                data: inflasi,
+                borderColor: 'blue',
+                fill: false
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>
